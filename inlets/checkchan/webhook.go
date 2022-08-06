@@ -31,6 +31,11 @@ func parseForm(form url.Values) (*Payload, error) {
 
 func (i *CheckChanWebhookInlet) Handler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if err := r.ParseMultipartForm(8192); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
+		}
 		payload, err := parseForm(r.Form)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
