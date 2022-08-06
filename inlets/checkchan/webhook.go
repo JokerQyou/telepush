@@ -7,6 +7,7 @@ import (
 	"github.com/muety/telepush/inlets"
 	"github.com/muety/telepush/model"
 	"github.com/muety/telepush/resolvers"
+	"github.com/muety/telepush/util"
 	"net/http"
 	"net/url"
 )
@@ -44,9 +45,13 @@ func (i *CheckChanWebhookInlet) Handler(h http.Handler) http.Handler {
 		}
 
 		message := &model.DefaultMessage{
-			Origin: "Check酱",
-			Text:   fmt.Sprintf("[%s](%s)", payload.Value, payload.Link),
-			Type:   resolvers.TextType,
+			Origin: "",
+			Text: fmt.Sprintf(
+				"*Check酱* :\n\n[%s](%s)",
+				util.EscapeMarkdown(payload.Value),
+				payload.Link,
+			),
+			Type: resolvers.TextType,
 		}
 
 		ctx := r.Context()
