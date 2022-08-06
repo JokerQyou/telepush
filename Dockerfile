@@ -2,6 +2,7 @@ FROM golang:alpine
 
 WORKDIR /data
 COPY . .
+ARG GOPROXY=https://proxy.golang.org,direct
 RUN go build -o telepush .
 
 FROM alpine
